@@ -13,6 +13,7 @@ public class JobDetailConfig {
     public JobDetail helloJobDetail(){
         return JobBuilder.newJob(JobConfig.class)
                 .withIdentity("HELLO_Quartz","JOB_GROUP")
+                .usingJobData("type","FIRST_JOB")
                 .storeDurably(true)
                 .build();
     }

@@ -5,16 +5,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class JobTriggerConfig {
-    @Bean(name="JobTrigger")
-    public Trigger trigger(JobDetail jobDetail){
+public class HelloTrigger {
+    @Bean
+    public Trigger helloTrigger(JobDetail helloDetail){
         System.out.println("Executing Trigger");
         try{
-            return TriggerBuilder.newTrigger().withIdentity("HELLO_TRIGGER","JOB_GROUP").forJob(jobDetail)
-                    .startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule()
+            return TriggerBuilder.newTrigger().withIdentity("HELLO_TRIGGER","TRIGGER_GROUP")
+                    .forJob(helloDetail).startNow()
+                    .withSchedule(SimpleScheduleBuilder.simpleSchedule()
                             .withIntervalInSeconds(5)
-                            .repeatForever()
-                            )
+                            .repeatForever())
                     .build();
         }catch(Exception e){
             System.out.println("Error Executing Trigger: " + e);
