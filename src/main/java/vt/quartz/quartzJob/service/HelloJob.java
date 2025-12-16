@@ -1,10 +1,12 @@
-package vt.quartz.quartzJob.Service;
+package vt.quartz.quartzJob.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class HelloJob {
+public class HelloJob implements QuartzTask {
+
+    @Override
     @Transactional
     public void run()
     {

@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class HelloTrigger {
-    @Bean
+public class HelloTriggerConfig {
+    @Bean(name="helloTrigger")
     public Trigger helloTrigger(JobDetail helloDetail){
         System.out.println("Executing Trigger");
         try{

@@ -8,12 +8,12 @@ import vt.quartz.quartzJob.job.JobConfig;
 
 //job detail return ra ở đây
 @Configuration
-public class JobDetailConfig {
-    @Bean(name = "JobDetail")
+public class HelloJobDetail {
+    @Bean(name = "helloDetail")
     public JobDetail helloJobDetail(){
         return JobBuilder.newJob(JobConfig.class)
                 .withIdentity("HELLO_Quartz","JOB_GROUP")
-                .usingJobData("type","FIRST_JOB")
+                .usingJobData("type","helloJob")
                 .storeDurably(true)
                 .build();
     }

@@ -1,6 +1,24 @@
-spring.application.name=quartz
-
+# c?u hình cho in-memory job
 spring:
-quartz:
-job-store-type: memory
-auto-startup: true
+  application:
+    name: quartz
+  quartz:
+    job-store-type: memory
+    auto-startup: true
+# c?u hình n?u dùng ?? l?u job vào db
+#spring:
+#  application:
+#    name: quartz
+#
+#  datasource:
+#    url: jdbc:sqlserver://localhost:1433;databaseName=quartz;encrypt=false
+#    username: quan
+#    password: 123456
+#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#
+#  quartz:
+#    job-store-type: jdbc
+#    auto-startup: true
+#    jdbc:
+#      initialize-schema: never
+
