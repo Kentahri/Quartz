@@ -14,7 +14,7 @@ public class HelloTriggerConfig {
                     .forJob(helloDetail).startNow()
                     .withSchedule(SimpleScheduleBuilder.simpleSchedule()
                             .withIntervalInSeconds(5)
-                            .repeatForever())
+                            .withRepeatCount(3))
                     .build();
         }catch(Exception e){
             System.out.println("Error Executing Trigger: " + e);
