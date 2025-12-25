@@ -1,24 +1,63 @@
-# c?u hình cho in-memory job
-spring:
-  application:
-    name: quartz
-  quartz:
-    job-store-type: memory
-    auto-startup: true
-# c?u hình n?u dùng ?? l?u job vào db
+# c?u hï¿½nh cho in-memory job
 #spring:
 #  application:
 #    name: quartz
-#
-#  datasource:
-#    url: jdbc:sqlserver://localhost:1433;databaseName=quartz;encrypt=false
-#    username: quan
-#    password: 123456
-#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-#
 #  quartz:
-#    job-store-type: jdbc
+#    job-store-type: memory
 #    auto-startup: true
-#    jdbc:
-#      initialize-schema: never
+# c?u hï¿½nh n?u dï¿½ng ?? l?u job vï¿½o db
+# yaml
+server:
+    port: 8085
+spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=quartz;encrypt=true;trustServerCertificate=true
+    username: quan
+    password: 123456
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: anhquan47eahleo@gmail.com
+    password: eapeqzijcuytfjgy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: QuartzScheduler
+            instanceId: AUTO
+
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.MSSQLDelegate
+            tablePrefix: QRTZ_
+            isClustered: true
+            clusterCheckinInterval: 7500
+            dataSource: quartzDS
+
+          dataSource:
+            quartzDS:
+              driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+              URL: jdbc:sqlserver://localhost:1433;databaseName=quartz;encrypt=true;trustServerCertificate=true
+              user: quan
+              password: 123456
+              maxConnections: 10
+
 
