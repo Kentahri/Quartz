@@ -1,63 +1,43 @@
-# c?u h�nh cho in-memory job
-#spring:
-#  application:
-#    name: quartz
-#  quartz:
-#    job-store-type: memory
-#    auto-startup: true
-# c?u h�nh n?u d�ng ?? l?u job v�o db
-# yaml
-server:
-    port: 8085
 spring:
+  application:
+    name: quartz-xa-demo
+
+  # JTA Configuration
+  jta:
+    enabled: true
+    atomikos:
+      properties:
+        service: com.atomikos.icatch.standalone.UserTransactionServiceFactory
+        max-timeout: 300000
+        default-jta-timeout: 10000
+        max-actives: 50
+        enable-logging: true
+        log-base-name: tmlog
+        log-base-dir: ./atomikos-logs
+        checkpoint-interval: 500
+
+  # MySQL Configuration
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=quartz;encrypt=true;trustServerCertificate=true
-    username: quan
-    password: 123456
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    quartz:
+      url: jdbc:mysql://localhost:3306/quartz?useSSL=false&serverTimezone=UTC
+      username: quan
+      password: 123456
 
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
+    app:
+      url: jdbc:mysql://localhost:3306/appdb?useSSL=false&serverTimezone=UTC
+      username: quan
+      password: 123456
 
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: anhquan47eahleo@gmail.com
-    password: eapeqzijcuytfjgy
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
+  # Quartz Configuration
   quartz:
     job-store-type: jdbc
     jdbc:
       initialize-schema: never
-    properties:
-      org:
-        quartz:
-          scheduler:
-            instanceName: QuartzScheduler
-            instanceId: AUTO
 
-          jobStore:
-            class: org.quartz.impl.jdbcjobstore.JobStoreTX
-            driverDelegateClass: org.quartz.impl.jdbcjobstore.MSSQLDelegate
-            tablePrefix: QRTZ_
-            isClustered: true
-            clusterCheckinInterval: 7500
-            dataSource: quartzDS
-
-          dataSource:
-            quartzDS:
-              driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
-              URL: jdbc:sqlserver://localhost:1433;databaseName=quartz;encrypt=true;trustServerCertificate=true
-              user: quan
-              password: 123456
-              maxConnections: 10
-
-
+logging:
+  level:
+    vt.quartz: DEBUG
+    org.springframework.jdbc: DEBUG
+    org.springframework.transaction: DEBUG
+    com.atomikos: DEBUG
+    org.quartz: INFO
