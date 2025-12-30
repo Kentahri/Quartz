@@ -2,7 +2,9 @@ spring:
   application:
     name: quartz-xa-demo
 
-  # JTA Configuration
+  # ======================
+  # JTA / Atomikos
+  # ======================
   jta:
     enabled: true
     atomikos:
@@ -16,7 +18,9 @@ spring:
         log-base-dir: ./atomikos-logs
         checkpoint-interval: 500
 
-  # MySQL Configuration
+  # ======================
+  # Datasource (raw info)
+  # ======================
   datasource:
     quartz:
       url: jdbc:mysql://localhost:3306/quartz?useSSL=false&serverTimezone=UTC
@@ -28,16 +32,28 @@ spring:
       username: quan
       password: 123456
 
-  # Quartz Configuration
+  # ======================
+  # Quartz behavior
+  # ======================
   quartz:
     job-store-type: jdbc
     jdbc:
       initialize-schema: never
 
-logging:
-  level:
-    vt.quartz: DEBUG
-    org.springframework.jdbc: DEBUG
-    org.springframework.transaction: DEBUG
-    com.atomikos: DEBUG
-    org.quartz: INFO
+    properties:
+      # Scheduler
+      org.quartz.scheduler.instanceName: QuartzScheduler
+      org.quartz.scheduler.instanceId: AUTO
+      org.quartz.scheduler.skipUpdateCheck: true
+
+      # JobStore (Spring-managed)
+      org.quartz.jobStore.class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+      org.quartz.jobStore.tablePrefix: QRTZ_
+      org.quartz.jobStore.isClustered: true
+      org.quartz.jobStore.clusterCheckinInterval: 20000
+
+      # ThreadPool
+      org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool
+      org.quartz.threadPool.threadCount: 10
+      org.quartz.threadPool.threadPriority: 5
